@@ -1,0 +1,19 @@
+{
+  "name": "chatting-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "~1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mongodb": "^4.1.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.14",
+    "npm-check": "^4.1.4",
+    "socket.io": "^4.3.1"
+  }
+}
