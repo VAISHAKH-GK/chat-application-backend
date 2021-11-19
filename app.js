@@ -20,8 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));
-
 const maxageSession = (1000 * 60 * 60 * 24 * 365.25  * 100000 );
 
 app.use(session({
