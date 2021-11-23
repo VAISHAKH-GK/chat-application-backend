@@ -69,16 +69,6 @@ router.get('/getmessages', (req, res) => {
 
 });
 
-//Create new Channel
-
-router.post('/createchannel', (req, res, next) => {
-  return new Promise((resolve, reject) => {
-    userHelper.createChannel(req.body).then((responce) => {
-      res.json('done');
-    });
-  })
-});
-
 //get all Users
 
 router.get('/getusers', (req, res) => {
@@ -186,6 +176,14 @@ router.get('/getfriends', (req, res) => {
   const user = req.query.user;
   userHelper.getFriends(user).then((friends) => {
     res.json(friends);
+  })
+});
+
+router.post('/createchannel', (req, res) => {
+  const user = req.query.user;
+  console.log(req.body);
+  userHelper.createChannel(req.body.channelName, user).then((responce) => {
+    res.json(responce);
   })
 });
 

@@ -89,9 +89,9 @@ module.exports = {
 
 
     },
-    createChannel: (channel) => {
+    createChannel: (channel,user) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(coll.channel).insertOne(channel).then((responce) => {
+            db.get().collection(coll.channel).insertOne({name:channel,owner:user}).then((responce) => {
                 resolve(responce.insertedId);
             });
         });
