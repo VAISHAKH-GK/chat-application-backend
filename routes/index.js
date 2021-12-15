@@ -187,6 +187,13 @@ router.post('/createchannel', (req, res) => {
   })
 });
 
+router.get('/getuserdetails', (req, res) => {
+  const user = req.query.user;
+  userHelper.getUserDetails(user).then((userDetails) => {
+    res.json(userDetails);
+  })
+})
+
 //Socket io connections
 
 let onlineSocket = {};

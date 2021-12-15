@@ -57,7 +57,7 @@ module.exports = {
                 bcrypt.compare(details.Password, Password).then(function (result) {
                     if (result) {
                         userData = userDetail;
-                        var info = { email: userData.email, userName: userData.userName, id: userData._id };
+                        var info = { email: userData.email, userName: userData.userName, id: userData._id, friends: userDetail.friends };
                         resolve(info);
                     } else {
                         reject('Wrong Password');
@@ -77,24 +77,24 @@ module.exports = {
                     $match: {}
                 },
                 {
-                    $lookup:{
-                        from:coll.user,
-                        localField:'owner',
-                        foreignField:'_id',
-                        as:'owner'
+                    $lookup: {
+                        from: coll.user,
+                        localField: 'owner',
+                        foreignField: '_id',
+                        as: 'owner'
                     }
                 },
                 {
-                    $unwind:'$owner'
+                    $unwind: '$owner'
                 },
                 {
-                    $project:{
-                        '_id':'$_id',
-                        'name':'$name',
-                        'ownerDetails.userName':'$owner.userName',
-                        'ownerDetails._id':'$owner._id',
-                        'ownerDetails.friends':'$owner.friends',
-                        'ownerDetails.email':'$owner.email'
+                    $project: {
+                        '_id': '$_id',
+                        'name': '$name',
+                        'ownerDetails.userName': '$owner.userName',
+                        'ownerDetails._id': '$owner._id',
+                        'ownerDetails.friends': '$owner.friends',
+                        'ownerDetails.email': '$owner.email'
                     }
                 }
             ]).toArray();
@@ -102,18 +102,9 @@ module.exports = {
             resolve(channels);
         })
     },
-    getChannel: (place) => {
-
-        return new Promise(async (resolve, reject) => {
-            var channel = await db.get().collection('Channels').findOne({ channel: place });
-            resolve(channel._id);
-        })
-
-
-    },
-    createChannel: (channel,user) => {
+    createChannel: (channel, user) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(coll.channel).insertOne({name:channel,owner:objid(user)}).then((responce) => {
+            db.get().collection(coll.channel).insertOne({ name: channel, owner: objid(user) }).then((responce) => {
                 resolve(responce.insertedId);
             });
         });
@@ -294,6 +285,12 @@ module.exports = {
                 }
             ]).toArray();
             resolve(friends);
+        });
+    },
+    getUserDetails: (user) => {
+        return new Promise(async (resolve, reject) => {
+            userDetails = await db.get().collection(coll.user).findOne({ _id: objid(user) }, { projection: { Password: 0, email: 0 } });
+            resolve(userDetails);
         });
     }
 }
